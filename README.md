@@ -27,9 +27,79 @@
 
   * 輸入:
     > mnist = datasets.mnist
+    
     > (x0, y0), (x1, y1) = datasets.mnist.load_data()
+    
     > train_x = x0.reshape(-1,784)
+    
     > train_y = x0.reshape(-1,784)
+    
     > test_x = x1.reshape(-1,784)
+    
     > test_y = x1.reshape(-1,784)
     
+    使用keras的mnist手寫數字
+    
+  * auto-encoder model:
+  
+    > input_x = Input([784,])
+
+    > #encoder
+    
+    > enc_input = Input([784,])
+    
+    > x = Dense(1000,activation= 'relu')(input_x)
+    
+    > x = Dense(500,activation= 'relu')(x) 
+    
+    > x = Dense(250,activation= 'relu')(x) 
+    
+    > enc_output = Dense(100)(x) 
+    
+    > encoder = Model(input_x,enc_output)
+    
+    > #decoder
+    
+    > dec_input = Input([100,])
+    
+    > x = Dense(250,activation= 'relu')(dec_input) 
+    
+    > x = Dense(500,activation= 'relu')(x) 
+    
+    > x = Dense(1000,activation= 'relu')(x) 
+    
+    > x = Dense(784)(x) 
+    
+    > dec_output = x
+    
+    > decoder = Model(dec_input,dec_output)
+    
+    > #合并
+    
+    > code = encoder(input_x )
+    
+    > output = decoder(code)
+
+    > model = Model(input_x,output)
+
+    > optimizer = optimizers.Adam(0.00001)
+    
+    > model.compile(optimizer=optimizer,loss='mse')
+    
+    > early_stopping=tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=1,patience=5, verbose=0, mode='auto',baseline=None, restore_best_weights=False)
+    
+    > history = model.fit(train_x,train_y,validation_data = (test_x,test_y),batch_size =128,epochs =10,callbacks = [early_stopping])
+    
+    架構如下圖
+    
+    ![Alt text](photo/圖片6.png)  
+  
+* 成果: 
+  * Traing and Validation loss:
+   ![Alt text](photo/圖片2.png)  
+   
+  * raw data、encoded image、decoded image比較:
+   ![Alt text](photo/圖片1.png)  
+   
+  * T-sne 後的decoded image(二維):
+   ![Alt text](photo/圖片3.png)  
