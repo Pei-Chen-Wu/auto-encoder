@@ -96,10 +96,13 @@
   
 * 成果: 
   * Traing and Validation loss:
+  
    ![Alt text](photo/圖片2.png)  
    
   * raw data、encoded image、decoded image比較:
+  
    ![Alt text](photo/圖片1.png)  
    
   * T-sne 後的decoded image(二維):
+  
    ![Alt text](photo/圖片3.png)  
